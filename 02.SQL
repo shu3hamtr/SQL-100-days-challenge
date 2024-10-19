@@ -37,3 +37,29 @@ where rn = 1
 Group by category, product, spend
 order by spend desc
 
+/*
+Find top 2 products in top 2 products based on the spend amount
+
+top 2 categories based on spend
+top 2 products in above best 2 categories
+*/
+
+with ranked_category as (
+select category, total_spend from (select Category, sum(spend) as total_spend,
+Dense_rank() over(order by sum(spend) desc) as rn
+from orders
+group by category) t
+where rn <= 2
+group by category
+)
+select category, product, total_spend_by_product
+from (
+select o.category, o.product,
+sum(o.spend) as total_spend_by_product,
+Dense_rank() over(partition by o.category order by sum(o.spend) desc) as pdrn
+from orders o
+join ranked_category rc
+on o.category = rc.category
+group by o.category, o.product) t2
+where pdrn <=2
+
