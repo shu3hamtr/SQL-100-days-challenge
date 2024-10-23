@@ -66,8 +66,7 @@ on p.customer_id = c.customer_id
 group by c.customer_id,c.customer_name
 Having count(DISTINCT p.product_category) = (select count(distinct product_category) from purchases)
 
-Write an SQL query to identify customers who have not made any purchases 
-in Electronics categories.
+-- Write an SQL query to identify customers who have not made any purchases in Electronics categories.
 
 select customer_id,customer_name from customers
 where customer_id not in (select DISTINCT customer_id from purchases
