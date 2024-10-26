@@ -125,14 +125,11 @@ Output a list of user_ids of these returning active users.
 
 */
 
-SELECT 
-    DISTINCT a1.user_id as active_users
-    -- a1.purchase_date as first_purchase,
-    -- a2.purchase_date as second_purchase,
-    -- a2.purchase_date - a1.purchase_date
-FROM amazon_transactions a1 -- first purchase table
-JOIN amazon_transactions a2 -- second purchase table 
-ON a1.user_id = a2.user_id    
-AND a1.purchase_date < a2.purchase_date
-AND a2.purchase_date - a1.purchase_date <= 7
-ORDER BY 1
+select DISTINCT a1.user_id as active_users from amazon_transactions a1 
+join amazon_transactions a2
+on a1.user_id = a2.user_id
+where a1.purchase_date < a2.purchase_date
+and a2.purchase_date - a1.purchase_date <= 7
+Order by 1
+
+
